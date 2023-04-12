@@ -3,7 +3,7 @@ def evaluate(lines):
         if line.startswith('FROM'):
             return {'passed': True, 'message': f'Dockerfile contains a valid FROM instruction.'}
         else:
-            return {'passed': False, 'message': 'Dockerfile does not contain a valid FROM instruction'}
+            return {'passed': False, 'message': f'Dockerfile does not contain a valid FROM instruction'}
 
 
 def description():
