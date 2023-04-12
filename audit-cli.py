@@ -4,112 +4,135 @@ import hashlib
 import json
 import sys
 
-class Rule:
-    def __init__(self, rule_file):
-        self.rule_file = rule_file
-        self.rule_name = os.path.basename(rule_file)
+
+class Procedure:
+    def __init__(self, procedure_file):
+        self.file = procedure_file
+        self.file_name = os.path.basename(procedure_file)
         self.passed = False
         self.description = None
-        self.fingerprint = hashlib.sha256(open(rule_file, 'rb').read()).hexdigest()
+        self.fingerprint = hashlib.sha256(open(procedure_file, 'rb').read()).hexdigest()
 
-        module_name = os.path.splitext(os.path.basename(rule_file))[0]
-        sys.path.append(os.path.dirname(rule_file))
+        module_name = os.path.splitext(os.path.basename(procedure_file))[0]
+        sys.path.append(os.path.dirname(procedure_file))
         module = __import__(module_name)
         self.evaluate_method = getattr(module, 'evaluate')
         self.description_method = getattr(module, 'description')
 
     def evaluate(self, file_path):
+        result = {}
         try:
-            self.evaluate_method(file_path)
-            self.passed = True
-        except:
-            self.passed = False
+            outcome = self.evaluate_method(file_path)
+            result["passed"] = outcome['passed']
+            result["message"] = outcome["message"]
+        except Exception as e:
+            result["passed"] = False
+            result["message"] = str(e)
+        return result
 
     def get_description(self):
         self.description = self.description_method()
 
+
 class Audit:
     def __init__(self):
-        self.rules = []
+        self.procedures = []
+        self.report = dict()
         self.file_path = None
-        self.rules_dir = None
+        self.procedures_dir = None
         self.output_dir = None
 
     def parse_arguments(self):
-        parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of rules')
+        parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of procedures')
         parser.add_argument('-f', '--file', required=True, help='file to evaluate')
-        parser.add_argument('-r', '--rules', required=True, help='directory containing the Python rule files')
+        parser.add_argument('-p', '--procedures', required=True, help='directory containing the audit procedure files')
         parser.add_argument('-o', '--out', required=False, help='directory to output JSON report')
         args = parser.parse_args()
         self.file_path = args.file
-        self.rules_dir = args.rules
-        self.output_dir = args.out
+        self.procedures_dir = args.procedures
+        self.output_dir = "./" if args.out is None else args.out
 
-    def load_rules(self):
-        for file_name in os.listdir(self.rules_dir):
+    def load_procedures(self):
+        for file_name in os.listdir(self.procedures_dir):
             if file_name.endswith('.py'):
-                rule_file = os.path.join(self.rules_dir, file_name)
-                self.rules.append(Rule(rule_file))
+                procedure_file = os.path.join(self.procedures_dir, file_name)
+                self.procedures.append(Procedure(procedure_file))
 
-    def evaluate_file(self):
+    def evaluate_procedures(self):
         with open(self.file_path, 'r') as f:
             lines = f.readlines()
-        for rule in self.rules:
-            rule.evaluate(lines)
+        for procedure in self.procedures:
+            procedure_result = procedure.evaluate(lines)
+            procedure.passed = procedure_result["passed"]
+            procedure.message = procedure_result["message"]
+            procedure.get_description()
 
-    def get_rule_descriptions(self):
-        for rule in self.rules:
-            rule.get_description()
+    def generate_report(self):
+        executed_count = len(self.procedures)
+        passed_count = len([r for r in self.procedures if r.passed])
+        failed_count = executed_count - passed_count
+        all_pass = executed_count == passed_count
 
-    def print_report(self):
-        ruleCount = len(self.rules)
-        passedCount = len([r for r in self.rules if r.passed])
-        failedCount = ruleCount - passedCount
-        allPass = ruleCount == passedCount 
+        self.report["passed"] = all_pass
+        self.report["executed_count"] = executed_count
+        self.report["passed_count"] = passed_count
+        self.report["failed_count"] = failed_count
+        self.report["target_file"] = os.path.basename(self.file_path)
+        self.report["target_file_fingerprint"] = hashlib.sha256(open(self.file_path, 'rb').read()).hexdigest()
 
-        targetFile = os.path.basename(self.file_path)
-        fileFingerprint = hashlib.sha256(open(self.file_path, 'rb').read()).hexdigest()
+        procedure_details = []
+        for procedure in self.procedures:
+            procedure_result = dict()
+            procedure_result["outcome"] = "pass" if procedure.passed else "fail"
+            procedure_result["description"] = procedure.description
+            procedure_result["file_name"] = procedure.file_name
+            procedure_result["file_fingerprint"] = procedure.fingerprint
+            procedure_result["message"] = procedure.message
+            procedure_details.append(procedure_result)
 
-        passFail = '\033[92m Passed \033[0m' if allPass else '\033[91m Failed \033[0m'
+        self.report["procedure_details"] = procedure_details
+
+    def terminal_report(self):
+        pass_fail_indicator = '\033[91m Failed \033[0m' if not self.report.get("passed") else '\033[92m Passed \033[0m'
         print("\n")
-        print(f'Summary - {passFail}')
+        print(f'Summary - {pass_fail_indicator}')
         print('-' * 20)
-        print(f'Target File: {targetFile}')
-        print(f'File Fingerprint: {fileFingerprint}')
+        print(f'Target File: {self.report.get("target_file")}')
         print('-' * 20)
-        print(f"Total:\t{ruleCount}")
-        print(f"Pass:\t{passedCount}")
-        print(f"Fail:\t{failedCount}")
+        print(f'Executed:\t{self.report.get("executed_count")}')
+        print(f'Pass:\t{self.report.get("passed_count")}')
+        print(f'Fail:\t{self.report.get("failed_count")}')
         print('-' * 20)
 
         print("\n")
-        print('{:<60} {:<10} {:<20} {:<64}'.format('Rule', 'Outcome', 'File', 'Fingerprint'))
+        print('{:<60} {:<10} {:<60}'.format('Procedure', 'Outcome', 'Message'))
         print('-' * 20)
-        for rule in self.rules:
-            outcome = '\033[92m pass \033[0m' if rule.passed else '\033[91m fail \033[0m'
-            print('{:<60} {:<10} {:<20} {:<64}'.format(rule.description, outcome, rule.rule_name, rule.fingerprint))
+        for procedure in self.report.get("procedure_details"):
+            outcome = '\033[92m pass \033[0m' if procedure.get("outcome")=="pass" else '\033[91m fail \033[0m'
+            print(f'{procedure.get("description"):<60} {outcome:<10} {procedure.get("message"):<60}')
         print("\n")
 
     def json_report(self):
 
         target = {
-            'file': os.path.basename(self.file_path),
-            'fingerprint': hashlib.sha256(open(self.file_path, 'rb').read()).hexdigest()
+            'file': self.report.get("target_file"),
+            'fingerprint': self.report.get("target_file_fingerprint")
         }
 
         summary = {
-            'rules_executed': len(self.rules),
-            'rules_passed': len([r for r in self.rules if r.passed]),
-            'rules_failed': len([r for r in self.rules if not r.passed])
+            'executed': self.report.get("executed_count"),
+            'passed': self.report.get("passed_count"),
+            'failed': self.report.get("failed_count"),
         }
 
         details = []
-        for rule in self.rules:
+        for procedure in self.report.get("procedure_details"):
             details.append({
-                'rule': rule.description,
-                'outcome': 'pass' if rule.passed else 'fail',
-                'file': rule.rule_name,
-                'fingerprint': rule.fingerprint
+                'description': procedure.get("description"),
+                'outcome': procedure.get("outcome"),
+                'message': procedure.get("message"),
+                'file': procedure.get("file_name"),
+                'fingerprint': procedure.get("file_fingerprint"),
             })
 
         report = {
@@ -122,20 +145,21 @@ class Audit:
         with open(output_file, 'w') as f:
             json.dump(report, f, indent=4)
 
-    def create_report(self):
-        self.print_report()
+    def report_audit_results(self):
+        self.generate_report()
+        self.terminal_report()
         self.json_report()
-   
+
     def run(self):
         try:
             self.parse_arguments()
-            self.load_rules()
-            self.evaluate_file()
-            self.get_rule_descriptions()
-            self.create_report()
+            self.load_procedures()
+            self.evaluate_procedures()
+            self.report_audit_results()
         except Exception as e:
             print(f"Error: {str(e)}")
             sys.exit(1)
+
 
 if __name__ == '__main__':
     Audit().run()
