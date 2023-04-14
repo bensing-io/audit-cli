@@ -11,6 +11,7 @@ class Procedure:
         self.file_name = os.path.basename(procedure_file)
         self.passed = False
         self.description = None
+        self.type = None
         self.fingerprint = hashlib.sha256(open(procedure_file, 'rb').read()).hexdigest()
 
         module_name = os.path.splitext(os.path.basename(procedure_file))[0]
@@ -18,6 +19,7 @@ class Procedure:
         module = __import__(module_name)
         self.evaluate_method = getattr(module, 'evaluate')
         self.description_method = getattr(module, 'description')
+        self.type_method = getattr(module, 'type')
 
     def evaluate(self, file_path):
         result = {}
@@ -32,6 +34,9 @@ class Procedure:
 
     def get_description(self):
         self.description = self.description_method()
+
+    def get_type(self):
+        self.type = self.type_method()
 
 
 class Audit:
@@ -108,7 +113,7 @@ class Audit:
         print('{:<60} {:<10} {:<60}'.format('Procedure', 'Outcome', 'Message'))
         print('-' * 20)
         for procedure in self.report.get("procedure_details"):
-            outcome = '\033[92m pass \033[0m' if procedure.get("outcome")=="pass" else '\033[91m fail \033[0m'
+            outcome = '\033[92m pass \033[0m' if procedure.get("outcome") == "pass" else '\033[91m fail \033[0m'
             print(f'{procedure.get("description"):<60} {outcome:<10} {procedure.get("message"):<60}')
         print("\n")
 
