@@ -5,5 +5,3 @@ def evaluate(lines):
 def description():
     return 'Some Guideline'
 
-def type():
-    return "standard"

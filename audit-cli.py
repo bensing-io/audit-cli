@@ -85,12 +85,14 @@ class Audit:
                 procedure.evaluate(lines)
 
     def generate_report(self):
+        procedure_count = len(self.procedures)
         executed_count = len([r for r in self.procedures if r.is_valid])
         passed_count = len([r for r in self.procedures if r.passed])
         failed_count = executed_count - passed_count
         all_pass = executed_count == passed_count
 
         self.report["passed"] = all_pass
+        self.report["procedure_count"] = procedure_count
         self.report["executed_count"] = executed_count
         self.report["passed_count"] = passed_count
         self.report["failed_count"] = failed_count
@@ -125,7 +127,8 @@ class Audit:
         print('-' * 20)
         print(f'Target File: {self.report.get("target_file")}')
         print('-' * 20)
-        print(f'Executed:\t{self.report.get("executed_count")}')
+        print(f'Total:\t{self.report.get("procedure_count")}')
+        print(f'Exec:\t{self.report.get("executed_count")}')
         print(f'Pass:\t{self.report.get("passed_count")}')
         print(f'Fail:\t{self.report.get("failed_count")}')
         print('-' * 20)
