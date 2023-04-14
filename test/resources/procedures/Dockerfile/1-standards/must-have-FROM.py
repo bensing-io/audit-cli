@@ -8,3 +8,7 @@ def evaluate(lines):
 
 def description():
     return 'Checks if a Dockerfile has a valid FROM instruction'
+
+
+def type():
+    return "standard"

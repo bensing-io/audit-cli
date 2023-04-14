@@ -3,33 +3,46 @@ import argparse
 import hashlib
 import json
 import sys
+import traceback
 
 
 class Procedure:
     def __init__(self, procedure_file):
         self.file = procedure_file
         self.file_name = os.path.basename(procedure_file)
+        self.was_executed = False
+        self.is_valid = True
+        self.invalid_message = ""
         self.passed = False
+        self.message = ""
         self.description = None
         self.type = None
         self.fingerprint = hashlib.sha256(open(procedure_file, 'rb').read()).hexdigest()
 
-        module_name = os.path.splitext(os.path.basename(procedure_file))[0]
-        sys.path.append(os.path.dirname(procedure_file))
-        module = __import__(module_name)
-        self.evaluate_method = getattr(module, 'evaluate')
-        self.description_method = getattr(module, 'description')
-        self.type_method = getattr(module, 'type')
+        try:
+            module_name = os.path.splitext(os.path.basename(procedure_file))[0]
+            sys.path.append(os.path.dirname(procedure_file))
+            module = __import__(module_name)
+            self.evaluate_method = getattr(module, 'evaluate')
+            self.description_method = getattr(module, 'description')
+            self.type_method = getattr(module, 'type')
+            self.get_description()
+            self.get_type()
+        except Exception as e:
+            self.is_valid = False
+            self.invalid_message = str(e)
 
     def evaluate(self, file_path):
         result = {}
         try:
             outcome = self.evaluate_method(file_path)
-            result["passed"] = outcome['passed']
-            result["message"] = outcome["message"]
+            self.passed = outcome['passed']
+            self.message = outcome["message"]
+            self.was_executed = True
         except Exception as e:
-            result["passed"] = False
-            result["message"] = str(e)
+            self.passed = False
+            self.message = str(e)
+            self.was_executed = False
         return result
 
     def get_description(self):
@@ -58,22 +71,21 @@ class Audit:
         self.output_dir = "./" if args.out is None else args.out
 
     def load_procedures(self):
-        for file_name in os.listdir(self.procedures_dir):
-            if file_name.endswith('.py'):
-                procedure_file = os.path.join(self.procedures_dir, file_name)
-                self.procedures.append(Procedure(procedure_file))
+        for root, _, files in os.walk(self.procedures_dir):
+            for file_name in files:
+                if file_name.endswith('.py'):
+                    procedure_file = os.path.join(root, file_name)
+                    self.procedures.append(Procedure(procedure_file))
 
     def evaluate_procedures(self):
         with open(self.file_path, 'r') as f:
             lines = f.readlines()
         for procedure in self.procedures:
-            procedure_result = procedure.evaluate(lines)
-            procedure.passed = procedure_result["passed"]
-            procedure.message = procedure_result["message"]
-            procedure.get_description()
+            if procedure.is_valid:
+                procedure.evaluate(lines)
 
     def generate_report(self):
-        executed_count = len(self.procedures)
+        executed_count = len([r for r in self.procedures if r.is_valid])
         passed_count = len([r for r in self.procedures if r.passed])
         failed_count = executed_count - passed_count
         all_pass = executed_count == passed_count
@@ -88,12 +100,21 @@ class Audit:
         procedure_details = []
         for procedure in self.procedures:
             procedure_result = dict()
-            procedure_result["outcome"] = "pass" if procedure.passed else "fail"
-            procedure_result["description"] = procedure.description
-            procedure_result["file_name"] = procedure.file_name
-            procedure_result["file_fingerprint"] = procedure.fingerprint
-            procedure_result["message"] = procedure.message
-            procedure_details.append(procedure_result)
+            if procedure.is_valid:
+                procedure_result["outcome"] = "pass" if procedure.passed else "fail"
+                procedure_result["description"] = procedure.description
+                procedure_result["type"] = procedure.type
+                procedure_result["file_name"] = procedure.file_name
+                procedure_result["file_fingerprint"] = procedure.fingerprint
+                procedure_result["message"] = procedure.message
+                procedure_details.append(procedure_result)
+            else:
+                procedure_result["outcome"] = "inconclusive"
+                procedure_result["description"] = f'{procedure.file_name} - Inconclusive'
+                procedure_result["file_name"] = procedure.file_name
+                procedure_result["file_fingerprint"] = procedure.fingerprint
+                procedure_result["message"] = f"There was an issue with the procedure file: {procedure.invalid_message}"
+                procedure_details.append(procedure_result)
 
         self.report["procedure_details"] = procedure_details
 
@@ -163,6 +184,7 @@ class Audit:
             self.report_audit_results()
         except Exception as e:
             print(f"Error: {str(e)}")
+            print(traceback.format_exc())
             sys.exit(1)
 
 
