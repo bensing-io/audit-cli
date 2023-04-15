@@ -1,6 +1,6 @@
 import argparse
 
-from audit import Audit
+from domain.audit import Audit
 
 
 if __name__ == '__main__':

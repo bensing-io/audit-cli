@@ -4,7 +4,7 @@ import json
 import sys
 import traceback
 
-from procedure import Procedure
+from domain.procedure import Procedure
 
 
 class Audit:
