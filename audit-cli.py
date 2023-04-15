@@ -5,51 +5,7 @@ import json
 import sys
 import traceback
 
-
-class Procedure:
-    def __init__(self, procedure_file):
-        self.file = procedure_file
-        self.file_name = os.path.basename(procedure_file)
-        self.was_executed = False
-        self.is_valid = True
-        self.invalid_message = ""
-        self.passed = False
-        self.message = ""
-        self.description = None
-        self.type = None
-        self.fingerprint = hashlib.sha256(open(procedure_file, 'rb').read()).hexdigest()
-
-        try:
-            module_name = os.path.splitext(os.path.basename(procedure_file))[0]
-            sys.path.append(os.path.dirname(procedure_file))
-            module = __import__(module_name)
-            self.evaluate_method = getattr(module, 'evaluate')
-            self.description_method = getattr(module, 'description')
-            self.type_method = getattr(module, 'type')
-            self.get_description()
-            self.get_type()
-        except Exception as e:
-            self.is_valid = False
-            self.invalid_message = str(e)
-
-    def evaluate(self, file_path):
-        result = {}
-        try:
-            outcome = self.evaluate_method(file_path)
-            self.passed = outcome['passed']
-            self.message = outcome["message"]
-            self.was_executed = True
-        except Exception as e:
-            self.passed = False
-            self.message = str(e)
-            self.was_executed = False
-        return result
-
-    def get_description(self):
-        self.description = self.description_method()
-
-    def get_type(self):
-        self.type = self.type_method()
+from procedure import Procedure
 
 
 class Audit:
@@ -119,7 +75,7 @@ class Audit:
                 procedure_details.append(procedure_result)
 
         self.report["procedure_details"] = procedure_details
-
+    # TODO: Update report outputs to include he total ran vs executed, and seperatre the guildienes, standards, and inconclusive
     def terminal_report(self):
         pass_fail_indicator = '\033[91m Failed \033[0m' if not self.report.get("passed") else '\033[92m Passed \033[0m'
         print("\n")
