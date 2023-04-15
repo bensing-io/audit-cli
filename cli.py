@@ -9,22 +9,12 @@ from procedure import Procedure
 
 
 class Audit:
-    def __init__(self):
+    def __init__(self, audit_inputs):
+        self.file_path = audit_inputs.file
+        self.procedures_dir = audit_inputs.procedures
+        self.output_dir = "./" if audit_inputs.out is None else audit_inputs.out
         self.procedures = []
         self.report = dict()
-        self.file_path = None
-        self.procedures_dir = None
-        self.output_dir = None
-
-    def parse_arguments(self):
-        parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of procedures')
-        parser.add_argument('-f', '--file', required=True, help='file to evaluate')
-        parser.add_argument('-p', '--procedures', required=True, help='directory containing the audit procedure files')
-        parser.add_argument('-o', '--out', required=False, help='directory to output JSON report')
-        args = parser.parse_args()
-        self.file_path = args.file
-        self.procedures_dir = args.procedures
-        self.output_dir = "./" if args.out is None else args.out
 
     def load_procedures(self):
         for root, _, files in os.walk(self.procedures_dir):
@@ -137,7 +127,6 @@ class Audit:
 
     def run(self):
         try:
-            self.parse_arguments()
             self.load_procedures()
             self.evaluate_procedures()
             self.report_audit_results()
@@ -148,4 +137,9 @@ class Audit:
 
 
 if __name__ == '__main__':
-    Audit().run()
+    parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of procedures')
+    parser.add_argument('-f', '--file', required=True, help='file to evaluate')
+    parser.add_argument('-p', '--procedures', required=True, help='directory containing the audit procedure files')
+    parser.add_argument('-o', '--out', required=False, help='directory to output JSON report')
+    args = parser.parse_args()
+    Audit(args).run()
