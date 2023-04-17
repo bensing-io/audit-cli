@@ -2,17 +2,19 @@ import hashlib
 import os
 import sys
 
+from domain.audit_outcome import AuditOutcome
+
 
 class Procedure:
     def __init__(self, procedure_file):
         self.file = procedure_file
-        self.was_executed = False
-        self.is_valid = True
+        self.is_valid = False
         self.invalid_message = ""
-        self.passed = False
+        self.was_executed = False
+        self.outcome = "fail"
         self.message = ""
-        self.description = None
-        self.type = None
+        self.description = ""
+        self.type = ""
 
         try:
             self.file_name = os.path.basename(self.file)
@@ -22,9 +24,10 @@ class Procedure:
             module = __import__(module_name)
             self.evaluate_method = getattr(module, 'evaluate')
             self.description_method = getattr(module, 'description')
-            self.type_method = getattr(module, 'type')
+            self.type_method = getattr(module, 'procedure_type')
             self.description = self.description_method()
             self.type = self.type_method()
+            self.is_valid = True
         except Exception as e:
             self.is_valid = False
             self.invalid_message = str(e)
@@ -32,12 +35,12 @@ class Procedure:
     def evaluate(self, file_path):
         result = {}
         try:
-            outcome = self.evaluate_method(file_path)
-            self.passed = outcome['passed']
-            self.message = outcome["message"]
+            result = self.evaluate_method(file_path)
+            self.outcome = AuditOutcome.validate(result['outcome'])
+            self.message = result["message"]
             self.was_executed = True
         except Exception as e:
-            self.passed = False
+            self.outcome = AuditOutcome.Inconclusive
             self.message = str(e)
             self.was_executed = False
         return result

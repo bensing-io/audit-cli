@@ -1,7 +1,10 @@
 def evaluate(lines):
-    return {'passed': False, 'message': f'The mock guildeine.'}
+    return {'outcome': 'passed', 'message': f'The mock guideline.'}
 
 
 def description():
     return 'Some Guideline'
 
+
+def procedure_type():
+    return "guideline"
