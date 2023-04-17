@@ -6,6 +6,7 @@ import traceback
 from domain.audit_outcome import AuditOutcome
 from domain.audit_report import AuditReport
 from domain.procedure import Procedure
+from domain.reports.cli_terminal_report import CliTerminalReport
 
 
 class Audit:
@@ -39,36 +40,38 @@ class Audit:
         self.report = AuditReport(self.file_path, self.procedures)
 
     def terminal_report(self):
-        pass_fail_indicator = '\033[91m Failed \033[0m' if not self.report.outcome() == AuditOutcome.Passed \
-            else '\033[92m Passed \033[0m'
-        print("\n")
-        print(f'Summary - {pass_fail_indicator}')
-        print('-' * 20)
-        print(f'Target File: {self.report.target_file()}')
-        print('-' * 20)
-        print(f'Total:\t{self.report.total()}')
-        print(f'Exec:\t{self.report.executed()}')
-        print(f'Pass:\t{self.report.passed()}')
-        print(f'Fail:\t{self.report.failed()}')
-        print('-' * 20)
-
-        print("\n")
-        print('{:<60} {:<10} {:<60}'.format('Standards', 'Outcome', 'Message'))
-        print('-' * 20)
-        for procedure_result in self.report.standards_details():
-            outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
-                else '\033[91m fail \033[0m'
-            print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
-        print("\n")
-
-        print("\n")
-        print('{:<60} {:<10} {:<60}'.format('Guidelines', 'Outcome', 'Message'))
-        print('-' * 20)
-        for procedure_result in self.report.guidelines_details():
-            outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
-                else '\033[91m fail \033[0m'
-            print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
-        print("\n")
+        report = CliTerminalReport(self)
+        report.generate_report()
+        # pass_fail_indicator = '\033[91m Failed \033[0m' if not self.report.outcome() == AuditOutcome.Passed \
+        #     else '\033[92m Passed \033[0m'
+        # print("\n")
+        # print(f'Summary - {pass_fail_indicator}')
+        # print('-' * 20)
+        # print(f'Target File: {self.report.target_file()}')
+        # print('-' * 20)
+        # print(f'Total:\t{self.report.total()}')
+        # print(f'Exec:\t{self.report.executed()}')
+        # print(f'Pass:\t{self.report.passed()}')
+        # print(f'Fail:\t{self.report.failed()}')
+        # print('-' * 20)
+        #
+        # print("\n")
+        # print('{:<60} {:<10} {:<60}'.format('Standards', 'Outcome', 'Message'))
+        # print('-' * 20)
+        # for procedure_result in self.report.standards_details():
+        #     outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
+        #         else '\033[91m fail \033[0m'
+        #     print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
+        # print("\n")
+        #
+        # print("\n")
+        # print('{:<60} {:<10} {:<60}'.format('Guidelines', 'Outcome', 'Message'))
+        # print('-' * 20)
+        # for procedure_result in self.report.guidelines_details():
+        #     outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
+        #         else '\033[91m fail \033[0m'
+        #     print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
+        # print("\n")
 
     def json_report(self):
 
