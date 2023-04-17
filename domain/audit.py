@@ -6,6 +6,7 @@ import traceback
 from domain.audit_report import AuditReport
 from domain.procedure import Procedure
 from domain.reports.cli_terminal_report import CliTerminalReport
+from domain.reports.json_report import JSONReport
 
 
 class Audit:
@@ -43,49 +44,8 @@ class Audit:
         report.generate_report()
 
     def json_report(self):
-
-        target = {
-            'file': self.report.target_file(),
-            'fingerprint': self.report.target_file_fingerprint()
-        }
-
-        summary = {
-            'total': self.report.total(),
-            'executed': self.report.executed(),
-            'passed': self.report.passed(),
-            'failed': self.report.failed(),
-        }
-
-        standards = []
-        for procedure_result in self.report.standards_details():
-            standards.append({
-                'description': procedure_result.description(),
-                'outcome': procedure_result.outcome().value,
-                'message': procedure_result.message(),
-                'file': procedure_result.file_name(),
-                'fingerprint': procedure_result.file_fingerprint(),
-            })
-
-        guidelines = []
-        for procedure_result in self.report.guidelines_details():
-            guidelines.append({
-                'description': procedure_result.description(),
-                'outcome': procedure_result.outcome().value,
-                'message': procedure_result.message(),
-                'file': procedure_result.file_name(),
-                'fingerprint': procedure_result.file_fingerprint(),
-            })
-
-        details = {
-            'standards': standards,
-            'guidelines': guidelines
-        }
-
-        report = {
-            'target': target,
-            'summary': summary,
-            'details': details
-        }
+        json_report = JSONReport(self)
+        report = json_report.generate_report()
 
         output_file = os.path.join(self.output_dir, 'audit-report.json')
         with open(output_file, 'w') as f:
