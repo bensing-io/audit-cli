@@ -12,7 +12,7 @@ class AuditReport:
         self._executed = len([r for r in executed_procedures if r.is_valid])
         self._passed = len([r for r in executed_procedures if r.outcome == AuditOutcome.Passed])
         self._outcome = self._determine_outcome(executed_procedures)
-        self._procedure_details = self._process_procedure_details(executed_procedures)
+        self._standards_details, self._guidelines_details = self._process_procedure_details(executed_procedures)
         self._target_file = os.path.basename(file_path)
         self._target_fingerprint = hashlib.sha256(open(file_path, 'rb').read()).hexdigest()
 
@@ -37,8 +37,11 @@ class AuditReport:
     def target_file_fingerprint(self) -> str:
         return self._target_fingerprint
 
-    def procedure_details(self) -> []:
-        return self._procedure_details
+    def standards_details(self) -> []:
+        return self._standards_details
+
+    def guidelines_details(self) -> []:
+        return self._guidelines_details
 
     def _determine_outcome(self, procedures) -> AuditOutcome:
         _outcome = ""
@@ -50,8 +53,13 @@ class AuditReport:
         return _outcome
 
     def _process_procedure_details(self, procedures) -> []:
-        _details = []
+        _standards = []
+        _guidelines = []
         for procedure in procedures:
-            _details.append(ProcedureResult(procedure))
-        return _details;
+            _procedure = ProcedureResult(procedure)
+            if procedure.type == "standard":
+                _standards.append(_procedure)
+            elif procedure.type == "guideline":
+                _guidelines.append(_procedure)
 
+        return _standards, _guidelines

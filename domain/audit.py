@@ -30,10 +30,14 @@ class Audit:
             if procedure.is_valid:
                 procedure.evaluate(lines)
 
+    def report_audit_results(self):
+        self.generate_report()
+        self.terminal_report()
+        self.json_report()
+
     def generate_report(self):
         self.report = AuditReport(self.file_path, self.procedures)
 
-    # TODO: Update report outputs to include he total ran vs executed, and seperatre the guildienes, standards, and inconclusive
     def terminal_report(self):
         pass_fail_indicator = '\033[91m Failed \033[0m' if not self.report.outcome() == AuditOutcome.Passed \
             else '\033[92m Passed \033[0m'
@@ -49,9 +53,18 @@ class Audit:
         print('-' * 20)
 
         print("\n")
-        print('{:<60} {:<10} {:<60}'.format('Procedure', 'Outcome', 'Message'))
+        print('{:<60} {:<10} {:<60}'.format('Standards', 'Outcome', 'Message'))
         print('-' * 20)
-        for procedure_result in self.report.procedure_details():
+        for procedure_result in self.report.standards_details():
+            outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
+                else '\033[91m fail \033[0m'
+            print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
+        print("\n")
+
+        print("\n")
+        print('{:<60} {:<10} {:<60}'.format('Guidelines', 'Outcome', 'Message'))
+        print('-' * 20)
+        for procedure_result in self.report.guidelines_details():
             outcome = '\033[92m pass \033[0m' if procedure_result.outcome() == AuditOutcome.Passed \
                 else '\033[91m fail \033[0m'
             print(f'{procedure_result.description():<60} {outcome:<10} {procedure_result.message():<60}')
@@ -71,15 +84,30 @@ class Audit:
             'failed': self.report.failed(),
         }
 
-        details = []
-        for procedure_result in self.report.procedure_details():
-            details.append({
+        standards = []
+        for procedure_result in self.report.standards_details():
+            standards.append({
                 'description': procedure_result.description(),
                 'outcome': procedure_result.outcome().value,
                 'message': procedure_result.message(),
                 'file': procedure_result.file_name(),
                 'fingerprint': procedure_result.file_fingerprint(),
             })
+
+        guidelines = []
+        for procedure_result in self.report.guidelines_details():
+            guidelines.append({
+                'description': procedure_result.description(),
+                'outcome': procedure_result.outcome().value,
+                'message': procedure_result.message(),
+                'file': procedure_result.file_name(),
+                'fingerprint': procedure_result.file_fingerprint(),
+            })
+
+        details = {
+            'standards': standards,
+            'guidelines': guidelines
+        }
 
         report = {
             'target': target,
@@ -90,11 +118,6 @@ class Audit:
         output_file = os.path.join(self.output_dir, 'audit-report.json')
         with open(output_file, 'w') as f:
             json.dump(report, f, indent=4)
-
-    def report_audit_results(self):
-        self.generate_report()
-        self.terminal_report()
-        self.json_report()
 
     def run(self):
         try:
