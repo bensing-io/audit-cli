@@ -1,7 +1,7 @@
 class JSONReport:
 
     def __init__(self, audit):
-        self.report = audit.report
+        self.report = audit.get_report()
 
     def generate_report(self) -> {}:
         target = {

@@ -4,7 +4,7 @@ from domain.audit_outcome import AuditOutcome
 class CliTerminalReport:
 
     def __init__(self, audit):
-        self.report = audit.report
+        self.report = audit.get_report()
 
     def generate_report(self):
         self._print_summary()

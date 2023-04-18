@@ -61,5 +61,4 @@ class AuditReport:
                 _standards.append(_procedure)
             elif procedure.type == "guideline":
                 _guidelines.append(_procedure)
-
         return _standards, _guidelines
