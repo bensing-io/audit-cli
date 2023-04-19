@@ -10,7 +10,7 @@ def evaluate(lines):
             return {'outcome': 'passed', 'message': 'The program "someCli" is not installed.'}
     except Exception as e:
         if "No such file or directory: 'someCli'" in str(e):
-            return {'outcome': 'passed', 'message': 'The program "someCli" is installed.'}
+            return {'outcome': 'passed', 'message': 'The program "someCli" is not installed.'}
         else:
             return {'outcome': 'inconclusive', 'message': f'Unable to determine if "someCli" is installed. {e}.'}
 

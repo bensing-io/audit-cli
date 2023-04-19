@@ -22,6 +22,5 @@ class Audit:
             if procedure.is_valid:
                 procedure.evaluate(file_lines)
 
-    # TODO - Refactor out the file_path and make it the file_name; update the attributes
     def _generate_report(self, file_path, procedures):
         self._report = AuditReport(file_path, procedures)
