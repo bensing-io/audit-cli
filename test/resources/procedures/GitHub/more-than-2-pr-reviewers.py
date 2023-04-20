@@ -7,10 +7,9 @@ def evaluate(lines):
     pull_request = json.loads(''.join(lines))
     reviewers = pull_request['requested_reviewers']
     if len(reviewers) >= min_pr_reviewers:
-        return {'outcome': 'passed]', 'message': f'There are {len(reviewers)} PR Reviewers.'}
+        return 'passed', f'There are {len(reviewers)} PR Reviewers.'
     else:
-        return {'outcome': 'failed', 'message': f'There are only {len(reviewers)} PR Reviewers, '
-                                                f'when there needs to be a minimum of {min_pr_reviewers} PR Reviewers.'}
+        return 'failed', f'There are only {len(reviewers)} PR Reviewers, when there needs to be a minimum of {min_pr_reviewers} PR Reviewers.'
 
 
 def description():

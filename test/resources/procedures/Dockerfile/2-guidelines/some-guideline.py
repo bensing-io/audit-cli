@@ -1,5 +1,5 @@
 def evaluate(lines):
-    return {'outcome': 'passed', 'message': f'The mock guideline.'}
+    return 'passed', f'The mock guideline.'
 
 
 def description():

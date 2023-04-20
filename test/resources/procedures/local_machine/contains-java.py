@@ -8,12 +8,11 @@ def evaluate(lines):
         version_query = subprocess.check_output(['java', '--version'],
                                                 stderr=subprocess.STDOUT, universal_newlines=True)
         if expected_java_version in version_query:
-            return {'outcome': 'passed', 'message': f'Local machine contains Java version [{expected_java_version}].'}
+            return 'passed', f'Local machine contains Java version [{expected_java_version}].'
         else:
-            return {'outcome': 'failed', 'message': f'The installed java version is not correct.'}
+            return 'failed', f'The installed java version is not correct.'
     except Exception as e:
-        print(e)
-        return {'outcome': 'inconclusive', 'message': f'Could not determine if Java was installed..'}
+        return 'inconclusive', f'Could not determine if Java was installed: Error - {str(e)}'
 
 
 def description():

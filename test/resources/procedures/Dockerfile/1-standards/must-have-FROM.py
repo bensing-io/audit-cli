@@ -1,9 +1,14 @@
 def evaluate(lines):
+    outcome = ''
+    message = ''
     for line in lines:
         if line.startswith('FROM'):
-            return {'outcome': 'passed', 'message': f'Dockerfile contains a valid FROM instruction.'}
+            outcome = 'passed'
+            message = 'Dockerfile contains a valid FROM instruction.'
         else:
-            return {'outcome': 'failed', 'message': f'Dockerfile does not contain a valid FROM instruction'}
+            outcome = 'failed'
+            message = 'Dockerfile does not contain a valid FROM instruction'
+    return outcome, message
 
 
 def description():

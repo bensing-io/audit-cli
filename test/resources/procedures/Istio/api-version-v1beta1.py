@@ -16,7 +16,6 @@ def evaluate(lines):
             version = line.strip().split(':')[1].strip()
             break
     if version == expected_api_version:
-        return {'outcome': 'passed', 'message': f'The API Version is properly set at [{expected_api_version}].'}
+        return 'passed', f'The API Version is properly set at [{expected_api_version}].'
     else:
-        return {'outcome': 'failed', 'message': f'The API version must be [{expected_api_version}].  '
-                                                f'It is currently [{version}]'}
+        return 'failed', f'The API version must be [{expected_api_version}]. It is currently [{version}]'

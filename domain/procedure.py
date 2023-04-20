@@ -35,9 +35,9 @@ class Procedure:
     def evaluate(self, file_path):
         result = {}
         try:
-            result = self.evaluate_method(file_path)
-            self.outcome = AuditOutcome.validate(result['outcome'])
-            self.message = result["message"] #TODO: update from message to reason
+            _outcome, _message = self.evaluate_method(file_path)
+            self.outcome = AuditOutcome.validate(_outcome)
+            self.message = _message
             self.was_executed = True
         except Exception as e:
             self.outcome = AuditOutcome.Inconclusive

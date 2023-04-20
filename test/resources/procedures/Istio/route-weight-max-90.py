@@ -16,8 +16,6 @@ def evaluate(lines):
             weight = int(line.split(': ')[1])
             break
     if weight and weight > 80:
-        return {'outcome': 'failed', 'message': f'The weight from the route must be less than {weight_max}%. '
-                                                f'Currently, the weight is {weight}%'}
+        return 'failed', f'The weight from the route must be less than {weight_max}%. Currently, the weight is {weight}%'
     else:
-        return {'outcome': 'passed', 'message': f'The weight from the route is '
-                                            f'less than {weight_max}% at {weight}%.'}
+        return 'passed', f'The weight from the route is less than {weight_max}% at {weight}%.'
