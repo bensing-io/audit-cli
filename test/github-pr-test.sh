@@ -3,4 +3,5 @@
 cd "$(dirname "$0")"
 python ../cli.py \
   -f ./target_files/GitHub/pull-request.json \
-  -p ./resources/procedures/GitHub/
+  -p ./resources/procedures/GitHub/ \
+  -o ./test_outputs/

@@ -10,6 +10,7 @@ class JSONReport:
         }
 
         summary = {
+            'outcome': self.report.outcome().value,
             'total': self.report.total(),
             'executed': self.report.executed(),
             'passed': self.report.passed(),
@@ -21,7 +22,7 @@ class JSONReport:
             standards.append({
                 'description': procedure_result.description(),
                 'outcome': procedure_result.outcome().value,
-                'message': procedure_result.message(),
+                'reason': procedure_result.message(),
                 'file': procedure_result.file_name(),
                 'fingerprint': procedure_result.file_fingerprint(),
             })
@@ -31,7 +32,7 @@ class JSONReport:
             guidelines.append({
                 'description': procedure_result.description(),
                 'outcome': procedure_result.outcome().value,
-                'message': procedure_result.message(),
+                'reason': procedure_result.message(),
                 'file': procedure_result.file_name(),
                 'fingerprint': procedure_result.file_fingerprint(),
             })

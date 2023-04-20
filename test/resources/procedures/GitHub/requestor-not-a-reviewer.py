@@ -12,7 +12,6 @@ def evaluate(lines):
         return {'outcome': 'passed', 'message': f'The PR Requestor is not a reviewer.'
                                                 f' Requestor: [{requestor}], Reviewer(s): {reviewers}'}
 
-
 def description():
     return 'Validates the PR Requestor cannot be a PR Reviewer.'
 

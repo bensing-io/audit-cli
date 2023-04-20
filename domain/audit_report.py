@@ -45,8 +45,8 @@ class AuditReport:
 
     def _determine_outcome(self, procedures) -> AuditOutcome:
         _outcome = ""
-        _inconclusive = len([r for r in procedures if r.outcome == "inconclusive"])
-        if _inconclusive is not None:
+        _inconclusive = len([r for r in procedures if r.outcome == AuditOutcome.Inconclusive])
+        if _inconclusive > 0:
             _outcome = AuditOutcome.Inconclusive
         else:
             _outcome = AuditOutcome.Passed if self.executed() == self.passed() else AuditOutcome.Failed
