@@ -23,6 +23,7 @@ class CliTerminalReport:
         self._print_summary_data_row('Executed', self.report.executed())
         self._print_summary_data_row('Passed', self.report.passed())
         self._print_summary_data_row('Failed', self.report.failed())
+        self._print_summary_data_row('Inconclusive', self.report.inconclusive())
         print('-' * 20)
 
     @staticmethod

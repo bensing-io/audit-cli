@@ -15,6 +15,7 @@ class JSONReport:
             'executed': self.report.executed(),
             'passed': self.report.passed(),
             'failed': self.report.failed(),
+            'inconclusive': self.report.inconclusive()
         }
 
         standards = []

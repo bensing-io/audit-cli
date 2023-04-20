@@ -11,6 +11,8 @@ class AuditReport:
         self._total = len(executed_procedures)
         self._executed = len([r for r in executed_procedures if r.is_valid])
         self._passed = len([r for r in executed_procedures if r.outcome == AuditOutcome.Passed])
+        self._failed = len([r for r in executed_procedures if r.outcome == AuditOutcome.Failed])
+        self._inconclusive = len([r for r in executed_procedures if r.outcome == AuditOutcome.Inconclusive])
         self._outcome = self._determine_outcome(executed_procedures)
         self._standards_details, self._guidelines_details = self._process_procedure_details(executed_procedures)
         self._target_file = os.path.basename(file_path)
@@ -26,7 +28,10 @@ class AuditReport:
         return self._passed
 
     def failed(self) -> int:
-        return self._executed - self._passed
+        return self._failed
+
+    def inconclusive(self) -> int:
+        return self._inconclusive
 
     def outcome(self) -> AuditOutcome:
         return self._outcome
