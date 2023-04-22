@@ -1,15 +1,15 @@
 import json
 import os
-
-from domain.audit import Audit
-from domain.procedure import Procedure
-from domain.reports.cli_terminal_report import CliTerminalReport
-from domain.reports.json_report import JSONReport
+# TODO - figure out how to lini the kernel with the cli app
+from ..nape_kernel.audit import Audit
+from ..nape_kernel.procedure import Procedure
+from reports.cli_terminal_report import CliTerminalReport
+from reports.json_report import JSONReport
 
 
 # This class has the responsibility for understanding the IO of how the files and procedures get loaded, and how to
 # display the audit report.
-class AuditTerminalApplication:
+class TerminalApplication:
 
     def __init__(self, file_path, procedures_dir, json_output_dir):
         self._file_path = file_path

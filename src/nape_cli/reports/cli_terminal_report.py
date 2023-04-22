@@ -1,4 +1,4 @@
-from domain.audit_outcome import AuditOutcome
+from nape_kernel.audit_outcome import AuditOutcome
 
 
 class CliTerminalReport:

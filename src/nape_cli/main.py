@@ -2,7 +2,7 @@ import argparse
 import sys
 import traceback
 
-from domain.audit_application import AuditTerminalApplication
+from terminal_application import TerminalApplication
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of procedures')
@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     try:
         args = parser.parse_args()
-        AuditTerminalApplication(args.file, args.procedures, args.out).run()
+        TerminalApplication(args.file, args.procedures, args.out).run()
     except Exception as e:
         print(f"Error: {str(e)}")
         print(traceback.format_exc())

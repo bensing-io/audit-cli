@@ -1,8 +1,8 @@
 import hashlib
 import os
 
-from domain.audit_outcome import AuditOutcome
-from domain.procedure_result import ProcedureResult
+from audit_outcome import AuditOutcome
+from procedure_result import ProcedureResult
 
 
 class AuditReport:

@@ -1,6 +1,6 @@
 from typing import Type
 
-from domain.audit_report import AuditReport
+from audit_report import AuditReport
 
 
 class Audit:
