@@ -1,4 +1,4 @@
-# Audit CLI
+# NAPE (Not Another Policy Engine)
 
 Are you aware that policy as code is nothing more than a false promise? Shockingly, numerous policy engines have been developed by tech-savvy individuals exclusively for other tech-savvy individuals, leaving the rest of us in the dark. But what if I told you that there is a solution that breaks this elitist cycle? Introducing the Audit CLI - a revolutionary approach to automating governance that is simple, accessible, and easily understood by everyone, regardless of technical expertise.
 
