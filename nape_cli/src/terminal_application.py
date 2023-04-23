@@ -1,8 +1,8 @@
 import json
 import os
 # TODO - figure out how to lini the kernel with the cli app
-from ..nape_kernel.audit import Audit
-from ..nape_kernel.procedure import Procedure
+from nape_kernel.src.audit import Audit
+from nape_kernel.src.procedure import Procedure
 from reports.cli_terminal_report import CliTerminalReport
 from reports.json_report import JSONReport
 
