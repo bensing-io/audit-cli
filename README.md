@@ -14,15 +14,15 @@ You'll soon be able to find the NAPE landing page at https://www.nape.dev
 
 [todo]
 
-- Audit vs. Assessment Seperation
+- Audit vs. Assessment Separation
   - [todo] - explain this
-- Fine Grained Standards & Proceudres
+- Fine Grained Standards & Procedures
   - [todo] - explain this
 - Compositional Audit
   - [todo] - explain this
-- Temporaly Tracible Assessments
+- Temporally Traceable Assessments
   - [todo] - explain this
-- Syntaxic Decloupling of Human text vs. Machine code (IoC)
+- Syntax Decoupling of Human text vs. Machine code (IoC)
   - [todo] - explain this
 - The One-Pager Approach
   - [todo] - explain this
