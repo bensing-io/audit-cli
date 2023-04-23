@@ -8,6 +8,22 @@ The notion of APEs, or Another Policy Engines, may make your skin crawl. What if
 
 [todo]
 
+- Audit vs. Assessment Seperation
+  - [todo] - explain this
+- Fine Grained Standards & Proceudres
+  - [todo] - explain this
+- Compositional Audit
+  - [todo] - explain this
+- Syntaxic Decloupling of Human text vs. Machine code (IoC)
+  - [todo] - explain this
+- The One-Pager Approach
+  - [todo] - explain this
+
 ## Inspirations
+
+- [Secure Controls Framework (SCF)](https://securecontrolsframework.com/)
+- [Open Polcy Agent](https://www.openpolicyagent.org/)
+- [Open Vulnerability And  Assessment Language (OVAL)](https://csrc.nist.gov/glossary/term/open_vulnerability_and_assessment_language)
+- [Open Security Controls Assessment Language (OSCAL)](https://pages.nist.gov/OSCAL/)
 
 [todo]
