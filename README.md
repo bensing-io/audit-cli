@@ -22,7 +22,7 @@ The notion of APEs, or Another Policy Engines, may make your skin crawl. What if
 ## Inspirations
 
 - [Secure Controls Framework (SCF)](https://securecontrolsframework.com/)
-- [Open Polcy Agent](https://www.openpolicyagent.org/)
+- [Open Polcy Agent (OPA)](https://www.openpolicyagent.org/)
 - [Open Vulnerability And  Assessment Language (OVAL)](https://csrc.nist.gov/glossary/term/open_vulnerability_and_assessment_language)
 - [Open Security Controls Assessment Language (OSCAL)](https://pages.nist.gov/OSCAL/)
 - [Secure Technology Implementation Guides (STIGs)](https://public.cyber.mil/stigs/)
