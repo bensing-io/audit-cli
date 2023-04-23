@@ -4,6 +4,12 @@ Are you aware that policy as code is nothing more than a false promise? Shocking
 
 The notion of APEs, or Another Policy Engines, may make your skin crawl. What if I told you that there is an innovative way to encode procedures and intertwine them with security, risk, and compliance considerations to ensure policy validation? Brace yourself for the Audit CLI - a groundbreaking solution that will change the way you think about policy engines. Say goodbye to complexity and exclusivity and hello to user-friendly, comprehensible governance automation.
 
+## NAPE Community
+
+Over time, I hope for NAPE to grow.  This repository (as part of Bensing IO) is where the core NAPE software resides.  The [NAPE Dev](https://github.com/nape-dev) community-oriented repo to house the documentation, NAPE examples, and a community catalog of procedures.
+
+You'll soon be able to find the NAPE landing page at https://www.nape.dev
+
 ## Design Philosophy
 
 [todo]
