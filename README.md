@@ -21,6 +21,7 @@ The notion of APEs, or Another Policy Engines, may make your skin crawl. What if
 
 ## Inspirations
 
+- [IIA Three Lines of Defense Model](https://www.theiia.org/en/content/position-papers/2020/the-iias-three-lines-model-an-update-of-the-three-lines-of-defense/)
 - [Secure Controls Framework (SCF)](https://securecontrolsframework.com/)
 - [Open Polcy Agent (OPA)](https://www.openpolicyagent.org/)
 - [Open Vulnerability And  Assessment Language (OVAL)](https://csrc.nist.gov/glossary/term/open_vulnerability_and_assessment_language)
