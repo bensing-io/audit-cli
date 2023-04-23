@@ -23,6 +23,8 @@ The notion of APEs, or Another Policy Engines, may make your skin crawl. What if
 
 - [IIA Three Lines of Defense Model](https://www.theiia.org/en/content/position-papers/2020/the-iias-three-lines-model-an-update-of-the-three-lines-of-defense/)
 - [Secure Controls Framework (SCF)](https://securecontrolsframework.com/)
+- [John Willis & Operational Definitions](https://www.profound-deming.com/blog-1/fli1w9qnfbdp2b87jm3vnbal7wqjz4)
+  - [Deming, DORA, and Operationalism - John Willis to DORA Community](https://www.youtube.com/watch?v=sH34-UiU8w0)
 - [Open Polcy Agent (OPA)](https://www.openpolicyagent.org/)
 - [Open Vulnerability And  Assessment Language (OVAL)](https://csrc.nist.gov/glossary/term/open_vulnerability_and_assessment_language)
 - [Open Security Controls Assessment Language (OSCAL)](https://pages.nist.gov/OSCAL/)
