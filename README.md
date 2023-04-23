@@ -20,6 +20,8 @@ You'll soon be able to find the NAPE landing page at https://www.nape.dev
   - [todo] - explain this
 - Compositional Audit
   - [todo] - explain this
+- Temporaly Tracible Assessments
+  - [todo] - explain this
 - Syntaxic Decloupling of Human text vs. Machine code (IoC)
   - [todo] - explain this
 - The One-Pager Approach
