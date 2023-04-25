@@ -1,6 +1,6 @@
 from typing import Type
 
-from audit_report import AuditReport
+from src.kernel.audit_report import AuditReport
 
 
 class Audit:

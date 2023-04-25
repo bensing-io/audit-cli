@@ -1,10 +1,9 @@
 import json
 import os
-# TODO - figure out how to lini the kernel with the cli app
-from nape_kernel.src.audit import Audit
-from nape_kernel.src.procedure import Procedure
+
 from reports.cli_terminal_report import CliTerminalReport
 from reports.json_report import JSONReport
+from src.kernel.audit import Audit
 
 
 # This class has the responsibility for understanding the IO of how the files and procedures get loaded, and how to
@@ -28,6 +27,7 @@ class TerminalApplication:
             for file_name in files:
                 if file_name.endswith('.py'):
                     procedure_file = os.path.join(root, file_name)
+                    from src.kernel.procedure import Procedure
                     _procedures.append(Procedure(procedure_file))
         return _procedures
 

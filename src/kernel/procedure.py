@@ -2,7 +2,7 @@ import hashlib
 import os
 import sys
 
-from audit_outcome import AuditOutcome
+from src.kernel.audit_outcome import AuditOutcome
 
 
 class Procedure:
