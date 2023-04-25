@@ -2,9 +2,10 @@ import argparse
 import sys
 import traceback
 
-from terminal_application import TerminalApplication
+from src.cli.terminal_application import TerminalApplication
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description='CLI to evaluate a file against a set of procedures')
     parser.add_argument('-f', '--file', required=True, help='file to evaluate')
     parser.add_argument('-p', '--procedures', required=True, help='directory containing the audit procedure files')
@@ -17,3 +18,7 @@ if __name__ == '__main__':
         print(f"Error: {str(e)}")
         print(traceback.format_exc())
         sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()

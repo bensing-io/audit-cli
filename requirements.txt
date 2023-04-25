@@ -1,0 +1,1 @@
+-e git+ssh://git@github.com/bensing-io/nape.git@41ff5876ac4145a74c608c2534fcd3ed924c8b78#egg=NAPE

@@ -1,8 +1,8 @@
 import json
 import os
 
-from reports.cli_terminal_report import CliTerminalReport
-from reports.json_report import JSONReport
+from src.cli.reports.cli_terminal_report import CliTerminalReport
+from src.cli.reports.json_report import JSONReport
 from src.kernel.audit import Audit
 
 
