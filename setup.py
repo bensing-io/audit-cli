@@ -10,8 +10,8 @@ HERE = pathlib.Path(__file__).parent
 # The text of the README file
 README = (HERE / "README.md").read_text()
 
-# automatically captured required modules for install_requires in requirements.txt and as well as configure dependency links
-
+# automatically captured required modules for install_requires in requirements.txt and as well as configure
+# dependency links
 with open(path.join(HERE, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
     install_requires = [x.strip() for x in all_reqs if
@@ -21,7 +21,8 @@ with open(path.join(HERE, 'requirements.txt'), encoding='utf-8') as f:
 setup(
     name='NAPE',
     version='0.1.0',
-    description='Execute fine grained audits ',
+    description='NAPE allows you to define and execute fine-grained procedures which audit various structured, '
+                'unstructured, and semi-structured files.',
     packages=find_packages(),
     install_requires=install_requires,
     python_requires='>=2.7',
@@ -33,5 +34,9 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     license='AGPL',
-    url='https://github.com/bensing-io/nape'
+    url='https://github.com/bensing-io/nape',
+    classifiers=[
+        "License :: OSI Approved :: GNU Affero General Public License v3",
+        "Programming Language :: Python :: 3.9",
+    ]
 )
