@@ -3,9 +3,9 @@ NAPE terminal application code."""
 import json
 import os
 
-from src.cli.reports.cli_terminal_report import CliTerminalReport
-from src.cli.reports.json_report import JSONReport
-from src.kernel.audit import Audit
+from cli_terminal_report import CliTerminalReport
+from json_report import JSONReport
+from audit import Audit
 
 
 class TerminalApplication:
@@ -35,7 +35,7 @@ class TerminalApplication:
             for file_name in files:
                 if file_name.endswith('.py'):
                     procedure_file = os.path.join(root, file_name)
-                    from src.kernel.procedure import Procedure
+                    from procedure import Procedure
                     _procedures.append(Procedure(procedure_file))
         return _procedures
 

@@ -3,8 +3,8 @@
 import hashlib
 import os
 
-from src.kernel.audit_outcome import AuditOutcome
-from src.kernel.procedure_result import ProcedureResult
+from audit_outcome import AuditOutcome
+from procedure_result import ProcedureResult
 
 
 class AuditReport:

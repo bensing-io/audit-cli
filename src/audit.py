@@ -1,7 +1,7 @@
 """Audit is the use case which manages the execution of procedures against the target file"""
 from typing import Type
 
-from src.kernel.audit_report import AuditReport
+from audit_report import AuditReport
 
 
 class Audit:
@@ -29,7 +29,6 @@ class Audit:
         """
         Invokes all the procedures and generates an AuditReport once all procedures are ran
         """
-        print("hello")
         self._evaluate_procedures(self._file_lines)
         self._generate_report(self._file_path, self._procedures)
 

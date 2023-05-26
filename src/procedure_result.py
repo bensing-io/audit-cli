@@ -1,4 +1,4 @@
-from src.kernel.audit_outcome import AuditOutcome
+from audit_outcome import AuditOutcome
 
 
 class ProcedureResult:

@@ -3,7 +3,7 @@ import argparse
 import sys
 import traceback
 
-from src.cli.terminal_application import TerminalApplication
+from terminal_application import TerminalApplication
 
 
 def main():

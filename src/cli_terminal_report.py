@@ -1,6 +1,6 @@
 """CliTerminalReport converts the AuditReport into a terminal-frindly report"""
 
-from src.kernel.audit_outcome import AuditOutcome
+from audit_outcome import AuditOutcome
 
 
 class CliTerminalReport:
