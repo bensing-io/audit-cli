@@ -1,9 +1,17 @@
+"""JSONReport converts the AuditReport into a JSON output
+which is stored in a local directory"""
+
+
 class JSONReport:
+    """JSONReport converts the AuditReport into a JSON output
+    which is stored in a local directory"""
 
     def __init__(self, audit):
         self.report = audit.get_report()
 
     def generate_report(self) -> {}:
+        """Invoke to generate the JSON report"""
+
         target = {
             'file': self.report.target_file(),
             'fingerprint': self.report.target_file_fingerprint()

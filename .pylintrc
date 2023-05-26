@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+
+disable=
+    import-outside-toplevel,
+    too-few-public-methods,
+    broad-exception-caught,
+    consider-using-f-string,
+    too-many-instance-attributes,

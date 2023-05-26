@@ -10,7 +10,7 @@ class ProcedureResult:
         if self.procedure.is_valid:
             _outcome = self.procedure.outcome
         else:
-            _outcome = AuditOutcome.Inconclusive
+            _outcome = AuditOutcome.INCONCLUSIVE
         return _outcome
 
     def description(self) -> str:
@@ -24,7 +24,8 @@ class ProcedureResult:
     def message(self) -> str:
         _message = ""
         if not self.procedure.is_valid:
-            _message = f'There was an issue with the procedure file: {self.procedure.invalid_message}'
+            _message = f'There was an issue with the procedure file: ' \
+                       f'{self.procedure.invalid_message}'
         else:
             _message = "" if self.procedure.message is None else self.procedure.message
         return _message
@@ -37,7 +38,3 @@ class ProcedureResult:
 
     def file_fingerprint(self) -> str:
         return "" if self.procedure.fingerprint is None else self.procedure.fingerprint
-
-
-
-

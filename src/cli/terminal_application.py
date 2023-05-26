@@ -1,3 +1,5 @@
+"""TerminalApplication is the application module which encapsulates the
+NAPE terminal application code."""
 import json
 import os
 
@@ -6,19 +8,25 @@ from src.cli.reports.json_report import JSONReport
 from src.kernel.audit import Audit
 
 
-# This class has the responsibility for understanding the IO of how the files and procedures get loaded, and how to
-# display the audit report.
 class TerminalApplication:
+    """This class has the responsibility for understanding the IO of how the files and
+    procedures get loaded, and how to display the audit report."""
 
     def __init__(self, file_path, procedures_dir, json_output_dir):
         self._file_path = file_path
         self._procedures_dir = procedures_dir
         self._json_output_dir = json_output_dir
 
+    def run_app(self):
+        """The main method which manages the execution for the Terminal Application"""
+        _audit = Audit(self._file_path, self._load_file(), self._load_procedures())
+        _audit.execute()
+        self._print_reports(_audit)
+
     def _load_file(self) -> []:
         _lines = []
-        with open(self._file_path, 'r') as f:
-            _lines = f.readlines()
+        with open(self._file_path, 'r', encoding="UTF-8") as _file:
+            _lines = _file.readlines()
         return _lines
 
     def _load_procedures(self) -> []:
@@ -31,17 +39,9 @@ class TerminalApplication:
                     _procedures.append(Procedure(procedure_file))
         return _procedures
 
-    def run(self):
-        _audit = Audit(self._file_path, self._load_file(), self._load_procedures())
-        _audit.execute()
-        self._print_reports(_audit)
-
     def _print_reports(self, audit):
-        self._print_terminal_report(audit)
-        self._print_json_report(audit, self._json_output_dir)
-
-    def _print_terminal_report(self, audit):
         CliTerminalReport(audit).generate_report()
+        self._print_json_report(audit, self._json_output_dir)
 
     def _print_json_report(self, audit, json_output_dir):
         if self._json_output_dir is None:
@@ -50,5 +50,5 @@ class TerminalApplication:
         if not os.path.exists(json_output_dir):
             os.makedirs(json_output_dir)
         output_file = os.path.join(json_output_dir, 'audit-report.json')
-        with open(output_file, 'w') as f:
-            json.dump(json_report, f, indent=4)
+        with open(output_file, 'w', encoding="UTF-8") as _file:
+            json.dump(json_report, _file, indent=4)

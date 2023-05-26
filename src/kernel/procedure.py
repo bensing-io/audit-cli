@@ -1,3 +1,7 @@
+"""
+Procedure validates and loads the *.py file which contain the fine-grained
+logic for an audit
+"""
 import hashlib
 import os
 import sys
@@ -28,9 +32,9 @@ class Procedure:
             self.description = self.description_method()
             self.type = self.type_method()
             self.is_valid = True
-        except Exception as e:
+        except Exception as _exception:
             self.is_valid = False
-            self.invalid_message = str(e)
+            self.invalid_message = str(_exception)
 
     def evaluate(self, file_path):
         result = {}
@@ -39,9 +43,8 @@ class Procedure:
             self.outcome = AuditOutcome.validate(_outcome)
             self.message = _message
             self.was_executed = True
-        except Exception as e:
-            self.outcome = AuditOutcome.Inconclusive
-            self.message = str(e)
+        except Exception as _exception:
+            self.outcome = AuditOutcome.INCONCLUSIVE
+            self.message = str(_exception)
             self.was_executed = False
         return result
-

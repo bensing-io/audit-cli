@@ -1,12 +1,17 @@
+"""CliTerminalReport converts the AuditReport into a terminal-frindly report"""
+
 from src.kernel.audit_outcome import AuditOutcome
 
 
 class CliTerminalReport:
+    """CliTerminalReport converts the AuditReport into a terminal-frindly report"""
 
     def __init__(self, audit):
         self.report = audit.get_report()
 
     def generate_report(self):
+        """Invoke to generate the terminal report"""
+
         self._print_summary()
         print()
         self._print_standards_details()
@@ -57,12 +62,12 @@ class CliTerminalReport:
     @staticmethod
     def _outcome_indicator(audit_outcome) -> str:
         outcome = ''
-        if audit_outcome == AuditOutcome.Passed:
+        if audit_outcome == AuditOutcome.PASSED:
             outcome = '\033[92mPassed\033[0m'
-        elif audit_outcome == AuditOutcome.Failed:
+        elif audit_outcome == AuditOutcome.FAILED:
             outcome = '\033[91mFailed\033[0m'
-        elif audit_outcome == AuditOutcome.Inconclusive:
+        elif audit_outcome == AuditOutcome.INCONCLUSIVE:
             outcome = '\033[93mInconclusive\033[0m'
-        elif audit_outcome == AuditOutcome.Warning:
+        elif audit_outcome == AuditOutcome.WARNING:
             outcome = '\033[93mWarning\033[0m'
         return outcome
