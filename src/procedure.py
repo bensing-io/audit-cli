@@ -10,6 +10,16 @@ from audit_outcome import AuditOutcome
 
 
 class Procedure:
+    """
+    Procedure loads the procedure file (.py) for execution and tracks the state of its execution.
+    ...
+
+    Attributes
+    ---
+    procedure_file: str
+        the local file path to the target file which is being audited
+
+    """
     def __init__(self, procedure_file):
         self.file = procedure_file
         self.is_valid = False
