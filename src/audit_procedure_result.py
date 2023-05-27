@@ -1,7 +1,7 @@
-from audit_outcome import AuditOutcome
+from audit_outcome import Outcome
 
 
-class ProcedureResult:
+class AuditProcedureResult:
 
     def __init__(self, procedure):
         self.procedure = procedure
@@ -10,7 +10,7 @@ class ProcedureResult:
         if self.procedure.is_valid:
             _outcome = self.procedure.outcome
         else:
-            _outcome = AuditOutcome.INCONCLUSIVE
+            _outcome = Outcome.INCONCLUSIVE
         return _outcome
 
     def description(self) -> str:

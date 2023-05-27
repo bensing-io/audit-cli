@@ -1,4 +1,4 @@
-"""The entrypoint for the NAPE cli"""
+"""The entrypoint for the NAPE kernel"""
 import argparse
 import sys
 import traceback

@@ -1,0 +1,5 @@
+user.name=NAPE Developer
+user.email=TheDev@nape.io
+user.signingkey=24ED5A5413904DDB
+commit.gpgsign=true
+gpg.program=/opt/homebrew/bin/gpg

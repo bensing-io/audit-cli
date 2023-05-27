@@ -28,7 +28,7 @@ setup(
     python_requires='>=2.7',
     entry_points='''
             [console_scripts]
-            nape=src.cli.main:main
+            nape=src.kernel.main:main
         ''',
     author='BensingIO',
     long_description=README,

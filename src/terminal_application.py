@@ -35,8 +35,8 @@ class TerminalApplication:
             for file_name in files:
                 if file_name.endswith('.py'):
                     procedure_file = os.path.join(root, file_name)
-                    from procedure import Procedure
-                    _procedures.append(Procedure(procedure_file))
+                    from audit_procedure import AuditProcedure
+                    _procedures.append(AuditProcedure(procedure_file))
         return _procedures
 
     def _print_reports(self, audit):

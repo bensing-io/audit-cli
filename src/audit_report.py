@@ -3,8 +3,8 @@
 import hashlib
 import os
 
-from audit_outcome import AuditOutcome
-from procedure_result import ProcedureResult
+from audit_outcome import Outcome
+from audit_procedure_result import AuditProcedureResult
 
 
 class AuditReport:
@@ -15,11 +15,11 @@ class AuditReport:
         self._executed = len(
             [r for r in executed_procedures if r.is_valid])
         self._passed = len(
-            [r for r in executed_procedures if r.outcome == AuditOutcome.PASSED])
+            [r for r in executed_procedures if r.outcome == Outcome.PASSED])
         self._failed = len(
-            [r for r in executed_procedures if r.outcome == AuditOutcome.FAILED])
+            [r for r in executed_procedures if r.outcome == Outcome.FAILED])
         self._inconclusive = len(
-            [r for r in executed_procedures if r.outcome == AuditOutcome.INCONCLUSIVE])
+            [r for r in executed_procedures if r.outcome == Outcome.INCONCLUSIVE])
         self._outcome = self._determine_outcome(executed_procedures)
         self._standards_details, self._guidelines_details = \
             self._process_procedure_details(executed_procedures)
@@ -46,7 +46,7 @@ class AuditReport:
         """Retrieves the total quantity of executed procedures which were inconclusive"""
         return self._inconclusive
 
-    def outcome(self) -> AuditOutcome:
+    def outcome(self) -> Outcome:
         """Retrieves the outcome of audit: Passed, Failed, or Inconclusive"""
         return self._outcome
 
@@ -66,21 +66,21 @@ class AuditReport:
         """Retrieves all the procedures which are Guidelines"""
         return self._guidelines_details
 
-    def _determine_outcome(self, procedures) -> AuditOutcome:
+    def _determine_outcome(self, procedures) -> Outcome:
         _outcome = ""
-        _inconclusive = len([r for r in procedures if r.outcome == AuditOutcome.INCONCLUSIVE])
+        _inconclusive = len([r for r in procedures if r.outcome == Outcome.INCONCLUSIVE])
         if _inconclusive > 0:
-            _outcome = AuditOutcome.INCONCLUSIVE
+            _outcome = Outcome.INCONCLUSIVE
         else:
-            _outcome = AuditOutcome.PASSED if self.executed() == self.passed() \
-                else AuditOutcome.FAILED
+            _outcome = Outcome.PASSED if self.executed() == self.passed() \
+                else Outcome.FAILED
         return _outcome
 
     def _process_procedure_details(self, procedures) -> []:
         _standards = []
         _guidelines = []
         for procedure in procedures:
-            _procedure = ProcedureResult(procedure)
+            _procedure = AuditProcedureResult(procedure)
             if procedure.type == "standard":
                 _standards.append(_procedure)
             elif procedure.type == "guideline":

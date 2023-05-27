@@ -6,12 +6,14 @@ import hashlib
 import os
 import sys
 
-from audit_outcome import AuditOutcome
+from audit_outcome import Outcome
 
 
-class Procedure:
+class AuditProcedure:
     """
-    Procedure loads the procedure file (.py) for execution and tracks the state of its execution.
+    AuditProcedure loads the procedure file (.py) as a module,
+    configures the procedure file for execution,
+    and tracks the state of its execution.
     ...
 
     Attributes
@@ -50,11 +52,11 @@ class Procedure:
         result = {}
         try:
             _outcome, _message = self.evaluate_method(file_path)
-            self.outcome = AuditOutcome.validate(_outcome)
+            self.outcome = Outcome.validate(_outcome)
             self.message = _message
             self.was_executed = True
         except Exception as _exception:
-            self.outcome = AuditOutcome.INCONCLUSIVE
+            self.outcome = Outcome.INCONCLUSIVE
             self.message = str(_exception)
             self.was_executed = False
         return result
